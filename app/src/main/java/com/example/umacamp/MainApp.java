@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 class MainApp extends Activity {
     // Debug identifier
-    public static final String TAG = "Estimote";
+    public static final String TAG = "UMACamp";
 
     // BeaconManager and region variables
     private BeaconManager beaconManager;
