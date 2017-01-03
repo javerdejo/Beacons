@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import static java.lang.Integer.parseInt;
 
 class BeaconData {
-    private long image;
+    private int image;
     private int major;
     private int minor;
     private String title;
@@ -41,7 +41,7 @@ class BeaconData {
 
     String getKey() { return major + ":" + minor; }
 
-    public long getImage() {
+    public int getImage() {
         return image;
     }
 
