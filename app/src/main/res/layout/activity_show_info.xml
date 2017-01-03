@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_show_info"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#7986CB"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/siaTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25px"
+                android:textColor="#ffffff"
+                android:textSize="30dp"
+                android:text="Title"
+                android:gravity="left" />
+
+            <TextView
+                android:id="@+id/siaSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="25px"
+                android:textColor="#ffffff"
+                android:text="Subtitle"
+                android:gravity="left" />
+        </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/siaButtonExit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_back"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/back"
+            />
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/siaWebBrowser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </WebView>
+
+
+</LinearLayout>

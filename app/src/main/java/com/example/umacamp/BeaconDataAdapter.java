@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class BeaconDataAdapter  extends ArrayAdapter {
+class BeaconDataAdapter  extends ArrayAdapter {
     private Context context;
     private ArrayList<BeaconData> data;
 

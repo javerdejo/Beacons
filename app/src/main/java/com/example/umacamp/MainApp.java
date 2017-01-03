@@ -3,12 +3,14 @@ package com.example.umacamp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,14 @@ class MainApp extends Activity {
     private BeaconManager beaconManager;
     private Region region;
 
+    // ListView for detected beacons
+    public ListView lv;
+
+    public static BeaconDataAdapter adapter;
+
+    // Stores detected beacons
+    public static ArrayList<BeaconData> places = new ArrayList<>();
+
     // Stores beacon information
     private static Map<String, BeaconData> mBeacon = new HashMap<>();
 
@@ -32,6 +42,15 @@ class MainApp extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app);
+
+        // Displays information about detected beacons
+        lv = (ListView) findViewById(R.id.lvItems);
+
+        // Creates new adapter to fill 'lv' list view and display the beacon info
+        adapter = new BeaconDataAdapter(this, places);
+
+        // Connects lv with their adapter
+        lv.setAdapter(adapter);
 
         // Start beacons ranging modality
         beaconManager = new BeaconManager(this);
@@ -66,8 +85,18 @@ class MainApp extends Activity {
     // Adds new beacon to the dictionary of the beacons detected
     public static void addBeacon(BeaconData bd) {
         mBeacon.put(bd.getKey(), bd);
-        Log.e(TAG, "key# " + bd.getKey() + " Items:" + mBeacon.size());
+        Log.e(TAG, "key# " + bd.getKey() + " Info: " + bd.getInfo() + ": " + " Items:" + mBeacon.size());
+
         // ToDo User Interface Update
+        places.clear();
+        for (BeaconData tmp: mBeacon.values()){
+            places.add(tmp);
+        }
+        adapter.notifyDataSetChanged();
+
+        //places.add(bd);
+        Log.e(TAG, "Size: " +places.size());
+
     }
 
     @Override

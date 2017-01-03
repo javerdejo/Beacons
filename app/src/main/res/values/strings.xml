@@ -3,4 +3,5 @@
     <string name="url_meta">https://ec2-54-167-56-75.compute-1.amazonaws.com:8443/iBeacons-Service/content/meta</string>
 
     <string name="app_name">UMACamp</string>
+    <string name="back">Back</string>
 </resources>
