@@ -3,7 +3,6 @@ package com.example.umacamp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,7 +23,7 @@ import java.util.UUID;
  */
 class MainApp extends Activity {
     // Debug identifier
-    public static final String TAG = "UMACamp";
+    //public static final String TAG = "UMACamp";
 
     // BeaconManager and region variables
     private BeaconManager beaconManager;
@@ -99,18 +98,15 @@ class MainApp extends Activity {
 
     // Adds new beacon to the dictionary of the beacons detected
     public static void addBeacon(BeaconData bd) {
-        mBeacon.put(bd.getKey(), bd);
-        //Log.e(TAG, "key# " + bd.getKey() + " Info: " + bd.getInfo() + ": " + " Items:" + mBeacon.size());
+        if (!mBeacon.containsKey(bd.getKey())) {
+            mBeacon.put(bd.getKey(), bd);
 
-        // ToDo User Interface Update
-        places.clear();
-        for (BeaconData tmp: mBeacon.values()){
-            places.add(tmp);
+            places.clear();
+            for (BeaconData tmp : mBeacon.values()) {
+                places.add(tmp);
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
-
-        //places.add(bd);
-        Log.e(TAG, "Size: " +places.size());
     }
 
     @Override

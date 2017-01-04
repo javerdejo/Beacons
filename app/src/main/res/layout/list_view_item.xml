@@ -12,7 +12,8 @@
         android:src="@drawable/ic_church"
         android:padding="5dp"
         android:layout_gravity="center_vertical"
-        android:contentDescription="Icono"/>
+        android:contentDescription="@string/iconString"
+        android:adjustViewBounds="false" />
 
     <LinearLayout
         android:layout_weight="0.8"
@@ -25,13 +26,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="Title"/>
+            android:text="@string/textString"/>
 
         <TextView
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Info"/>
+            android:text="@string/textString"/>
     </LinearLayout>
 
 </LinearLayout>
