@@ -14,7 +14,7 @@ class BeaconDataAdapter  extends ArrayAdapter {
     private Context context;
     private ArrayList<BeaconData> data;
 
-    public BeaconDataAdapter(Context context, ArrayList data) {
+    BeaconDataAdapter(Context context, ArrayList data) {
         super(context, R.layout.list_view_item, data);
         this.context = context;
         this.data = data;

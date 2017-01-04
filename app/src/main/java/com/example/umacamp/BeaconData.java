@@ -11,21 +11,21 @@ class BeaconData {
     private int minor;
     private String title;
     private String info;
-    private String typeId;
-
-    int icons[] = {
-            R.drawable.ic_museum,
-            R.drawable.ic_church,
-            R.drawable.ic_monument,
-            R.drawable.ic_pantheon,
-            R.drawable.ic_statue,
-            R.drawable.ic_restaurant,
-            R.drawable.ic_coffee,
-            R.drawable.ic_pizza,
-            R.drawable.ic_bar
-    };
 
     BeaconData(String jsonData, int major, int minor) {
+        String typeId;
+        final int icons[] = {
+                R.drawable.ic_museum,
+                R.drawable.ic_church,
+                R.drawable.ic_monument,
+                R.drawable.ic_pantheon,
+                R.drawable.ic_statue,
+                R.drawable.ic_restaurant,
+                R.drawable.ic_coffee,
+                R.drawable.ic_pizza,
+                R.drawable.ic_bar
+        };
+
         try {
             JSONObject root = new JSONObject(jsonData);
             title = root.getString("title");
@@ -41,27 +41,24 @@ class BeaconData {
 
     String getKey() { return major + ":" + minor; }
 
-    public int getImage() {
+    int getImage() {
         return image;
     }
 
-    public int getMajor() {
+    int getMajor() {
         return major;
     }
 
-    public int getMinor() {
+    int getMinor() {
         return minor;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public String getInfo() {
+    String getInfo() {
         return info;
     }
 
-    public String getTypeId() {
-        return typeId;
-    }
 }
