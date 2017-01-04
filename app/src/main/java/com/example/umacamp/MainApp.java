@@ -1,8 +1,13 @@
 package com.example.umacamp;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -33,6 +38,9 @@ class MainApp extends Activity {
     public ListView lv;
 
     public static BeaconDataAdapter adapter;
+    static NotificationManager nm;
+    static Context context;
+    static HashMap<String, String> beaconKeys = new HashMap<String,String>();
 
     // Stores detected beacons
     public static ArrayList<BeaconData> places = new ArrayList<>();
@@ -40,10 +48,34 @@ class MainApp extends Activity {
     // Stores beacon information
     private static Map<String, BeaconData> mBeacon = new HashMap<>();
 
+    //
+    protected static void displayNotification() {
+        int notificationID = 1;
+        Intent i = new Intent(context, MainApp.class);
+        i.putExtra("notificationID", notificationID);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
+
+        CharSequence ticker = "Hemos encontrado algo para ti";
+        CharSequence contentTitle = "Málaga Interactiva";
+        CharSequence contentText = "Hemos encontrado algo para ti";
+        Notification noti = new NotificationCompat.Builder(context)
+                .setContentIntent(pendingIntent)
+                .setTicker(ticker)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setSmallIcon(R.drawable.ic_bar)
+                .setVibrate(new long[]{100, 250, 100, 500})
+                .build();
+        nm.notify(notificationID, noti);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app);
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        context = getApplicationContext();
 
         // Displays information about detected beacons
         lv = (ListView) findViewById(R.id.lvItems);
@@ -62,13 +94,13 @@ class MainApp extends Activity {
                 if (!list.isEmpty()) {
                     // Verifies all beacons detected in the zone
                     for (Beacon b : list) {
+                        String key;
+                        key = b.getMajor() + ":" + b.getMinor();
                         // Stores information only with IMMEDIATE beacons
                         if (Utils.computeProximity(b) == Utils.Proximity.IMMEDIATE) {
-                            new BeaconAPIRequest(getApplicationContext()).execute(b);
+                                new BeaconAPIRequest(getApplicationContext()).execute(b);
                         } else {
-                            String key;
-                            key = b.getMajor() + ":" + b.getMinor();
-                            if (mBeacon.containsKey(key)){
+                            if (mBeacon.containsKey(key)) {
                                 mBeacon.remove(key);
                             }
                         }
@@ -80,7 +112,7 @@ class MainApp extends Activity {
         // Defines the region for beacons scanning
         region = new Region("ranged region",
                 UUID.fromString(getResources().getString(R.string.uuid)),
-                        null, null);
+                null, null);
 
         // List view click event
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,6 +138,11 @@ class MainApp extends Activity {
                 places.add(tmp);
             }
             adapter.notifyDataSetChanged();
+
+            if (!beaconKeys.containsKey(bd.getKey())) {
+                beaconKeys.put(bd.getKey(), bd.getTitle());
+                displayNotification();
+            }
         }
     }
 
