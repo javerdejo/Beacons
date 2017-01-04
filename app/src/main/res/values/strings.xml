@@ -1,6 +1,7 @@
 <resources>
     <string name="uuid">B9407F30-F5F8-466E-AFF9-25556B57FE6D</string>
     <string name="url_meta">https://ec2-54-167-56-75.compute-1.amazonaws.com:8443/iBeacons-Service/content/meta</string>
+    <string name="url_server">https://ec2-54-167-56-75.compute-1.amazonaws.com:8443/iBeacons-Service/content/ibeacon</string>
 
     <string name="app_name">UMACamp</string>
     <string name="back">Back</string>

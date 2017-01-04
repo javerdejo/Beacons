@@ -1,8 +1,11 @@
 package com.example.umacamp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.estimote.sdk.Beacon;
@@ -80,12 +83,24 @@ class MainApp extends Activity {
                 UUID.fromString(getResources().getString(R.string.uuid)),
                         null, null);
 
+        // List view click event
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ShowInfoActivity.class);
+                intent.putExtra("TITLE_ID", places.get(position).getTitle());
+                intent.putExtra("INFO_ID", places.get(position).getInfo());
+                intent.putExtra("MAJOR_ID", Integer.toString(places.get(position).getMajor()));
+                intent.putExtra("MINOR_ID", Integer.toString(places.get(position).getMinor()));
+                startActivity(intent);
+            }
+        });
     }
 
     // Adds new beacon to the dictionary of the beacons detected
     public static void addBeacon(BeaconData bd) {
         mBeacon.put(bd.getKey(), bd);
-        Log.e(TAG, "key# " + bd.getKey() + " Info: " + bd.getInfo() + ": " + " Items:" + mBeacon.size());
+        //Log.e(TAG, "key# " + bd.getKey() + " Info: " + bd.getInfo() + ": " + " Items:" + mBeacon.size());
 
         // ToDo User Interface Update
         places.clear();
@@ -96,7 +111,6 @@ class MainApp extends Activity {
 
         //places.add(bd);
         Log.e(TAG, "Size: " +places.size());
-
     }
 
     @Override
