@@ -26,21 +26,19 @@ import java.util.UUID;
 /**
  * Main App
  */
-class MainApp extends Activity {
-    // Debug identifier
-    //public static final String TAG = "UMACamp";
-
+public class MainApp extends Activity {
     // BeaconManager and region variables
     private BeaconManager beaconManager;
     private Region region;
 
-    // ListView for detected beacons
+    // Elements to display detected beacons in display view
+    public static BeaconDataAdapter adapter;
     public ListView lv;
 
-    public static BeaconDataAdapter adapter;
+    // Element to show notifications
+    static HashMap<String, String> beaconKeys = new HashMap<>();
     static NotificationManager nm;
     static Context context;
-    static HashMap<String, String> beaconKeys = new HashMap<String,String>();
 
     // Stores detected beacons
     public static ArrayList<BeaconData> places = new ArrayList<>();
@@ -48,11 +46,10 @@ class MainApp extends Activity {
     // Stores beacon information
     private static Map<String, BeaconData> mBeacon = new HashMap<>();
 
-    //
+    // Displays a notification when new beacon is detected
     protected static void displayNotification() {
-        int notificationID = 1;
         Intent i = new Intent(context, MainApp.class);
-        i.putExtra("notificationID", notificationID);
+        int notificationID = 1;
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
 
@@ -74,32 +71,41 @@ class MainApp extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app);
+
+        // Gets the application notification service
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        // Gets the application context
         context = getApplicationContext();
 
-        // Displays information about detected beacons
+        // The widget 'lv' is used to display information about detected beacons
         lv = (ListView) findViewById(R.id.lvItems);
 
-        // Creates new adapter to fill 'lv' list view and display the beacon info
+        // Creates new adapter to fill 'lv' listview and display the beacon info
         adapter = new BeaconDataAdapter(this, places);
 
         // Connects lv with their adapter
         lv.setAdapter(adapter);
 
+        // ToDo: Convert the beacon detection in a service
         // Start beacons ranging modality
         beaconManager = new BeaconManager(this);
         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
             public void onBeaconsDiscovered(Region region, List<Beacon> list) {
+                // If there are beacons detected
                 if (!list.isEmpty()) {
                     // Verifies all beacons detected in the zone
                     for (Beacon b : list) {
                         String key;
+                        // Defines a unique key for each beacon
                         key = b.getMajor() + ":" + b.getMinor();
                         // Stores information only with IMMEDIATE beacons
                         if (Utils.computeProximity(b) == Utils.Proximity.IMMEDIATE) {
-                                new BeaconAPIRequest(getApplicationContext()).execute(b);
+                            // When the beacon is near to the device it is added to the listview
+                            new BeaconAPIRequest(getApplicationContext()).execute(b);
                         } else {
+                            // Removes beacon from the list when is out of range
                             if (mBeacon.containsKey(key)) {
                                 mBeacon.remove(key);
                             }
@@ -114,7 +120,8 @@ class MainApp extends Activity {
                 UUID.fromString(getResources().getString(R.string.uuid)),
                 null, null);
 
-        // List view click event
+        // When a item of the listview is tapped a new activity shows information about the
+        // selected item
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -128,17 +135,22 @@ class MainApp extends Activity {
         });
     }
 
-    // Adds new beacon to the dictionary of the beacons detected
+    // Adds new beacon to the dictionary of the detected beacons
     public static void addBeacon(BeaconData bd) {
+        // If the beacon does not exist in the dictionary then it is added
         if (!mBeacon.containsKey(bd.getKey())) {
+            // Adds the beacon to the dictionary
             mBeacon.put(bd.getKey(), bd);
 
+            // Generates the vector 'places' to update the listview widget
             places.clear();
             for (BeaconData tmp : mBeacon.values()) {
                 places.add(tmp);
             }
+            // Shows new changes in the listview
             adapter.notifyDataSetChanged();
 
+            // if is the first time for this beacon then a notification is displayed
             if (!beaconKeys.containsKey(bd.getKey())) {
                 beaconKeys.put(bd.getKey(), bd.getTitle());
                 displayNotification();

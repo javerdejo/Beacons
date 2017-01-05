@@ -18,9 +18,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 
 class HttpUrlConnectionJson {
-    private static final String TAG = "HttpUrlConnectionJson";
 
-    public static String request(String urlPath) {
+    static String request(String urlPath) {
         SSLContext sc = null;
         try {
             sc = SSLContext.getInstance("SSL");
@@ -51,7 +50,7 @@ class HttpUrlConnectionJson {
             connection.connect();
 
             StringBuilder stringBuilder = new StringBuilder();
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStreamReader streamReader = new InputStreamReader(connection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(streamReader);
                 String response;
@@ -74,7 +73,7 @@ class HttpUrlConnectionJson {
             e.printStackTrace();
             return null;
         } finally {
-            if (connection != null){
+            if (connection != null) {
                 connection.disconnect();
             }
         }

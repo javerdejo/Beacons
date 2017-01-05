@@ -7,7 +7,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-class ShowInfoActivity extends AppCompatActivity {
+public class ShowInfoActivity extends AppCompatActivity {
     WebView siaWebBrowser;
 
     @Override
