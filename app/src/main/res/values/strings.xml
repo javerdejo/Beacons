@@ -7,4 +7,5 @@
     <string name="back">Back</string>
     <string name="textString">text</string>
     <string name="iconString">icon</string>
+    <string name="nearString">Cerca de ti...</string>
 </resources>
